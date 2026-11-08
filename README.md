@@ -10,51 +10,43 @@ The goal is to transform raw business data into meaningful insights and interact
 
 Tools & Technologies
 
-Microsoft Power BI
+  Microsoft Power BI
 
-Power Query
+  Power Query
 
-DAX
+  DAX
 
-Data Modeling
+  Data Modeling
 
-Data Visualization
+  Data Visualization
 
 Project Objectives
 
-Analyze overall sales performance.
+  Analyze overall sales performance.
 
-Identify the most profitable products.
+  Identify the most profitable products.
 
-Explore store performance.
+  Explore store performance.
 
-Analyze inventory and product availability.
+  Analyze inventory and product availability.
 
-Identify business trends and opportunities.
-
-Dashboard Pages
-
-Add screenshots and descriptions of each report page here.
-
-Key Insights
-
-Add your most important findings from the analysis here.
+  Identify business trends and opportunities.
 
 Files
 
-.pbip – Power BI Project file.
+  .pbip – Power BI Project file.
 
-.Report – Report pages and visualizations.
+  .Report – Report pages and visualizations.
 
-.SemanticModel – Data model, relationships and measures.
+  .SemanticModel – Data model, relationships and measures.
 
 How to Open
 
-Download or clone this repository.
+  Download or clone this repository.
 
-Open the .pbip file using Power BI Desktop.
+  Open the .pbip file using Power BI Desktop.
 
-Refresh the data if required.
+  Refresh the data if required.
 
 Author
 
