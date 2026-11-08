@@ -1,0 +1,46 @@
+table F_inventory
+	lineageTag: 226d4f80-1af7-483d-b344-2b3e35523e48
+
+	column Store_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 28090d93-816c-44e4-9855-c5b7abf2be11
+		summarizeBy: none
+		sourceColumn: Store_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 68d464b3-5afe-4a89-9e5a-60fc2d61e029
+		summarizeBy: none
+		sourceColumn: Product_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Stock_On_Hand
+		dataType: int64
+		formatString: 0
+		lineageTag: a13aa4e1-5036-44a7-b1b4-1bc6f5062dc4
+		summarizeBy: sum
+		sourceColumn: Stock_On_Hand
+
+		annotation SummarizationSetBy = Automatic
+
+	partition F_inventory = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Donce\Desktop\PowerBI\New folder\Maven+Toys\Maven Toys Data\inventory.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Store_ID", Int64.Type}, {"Product_ID", Int64.Type}, {"Stock_On_Hand", Int64.Type}}),
+				    #"Removed Blank Rows" = Table.SelectRows(#"Changed Type", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Blank Rows")
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

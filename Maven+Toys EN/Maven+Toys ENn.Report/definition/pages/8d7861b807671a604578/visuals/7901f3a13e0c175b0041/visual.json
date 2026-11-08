@@ -1,0 +1,54 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "7901f3a13e0c175b0041",
+  "position": {
+    "x": 1009.1743119266055,
+    "y": 435.71251461159727,
+    "z": 9000,
+    "height": 145.08873224469556,
+    "width": 270.83230019009835,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Total Stock On Hand"
+                }
+              },
+              "queryRef": "_Measures.Total Stock On Hand",
+              "nativeQueryRef": "Bendras atsargų kiekis",
+              "displayName": "Total Stock on Hand"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "5fb52214ea651910423a",
+  "position": {
+    "x": 1009.1743119266055,
+    "y": 575.878525970269,
+    "z": 10000,
+    "height": 144.12147402973093,
+    "width": 270.83230019009835,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Days of Supply"
+                }
+              },
+              "queryRef": "_Measures.Days of Supply",
+              "nativeQueryRef": "Atsargų pakankamumas (dienomis)",
+              "displayName": "Days of Inventory Coverage"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

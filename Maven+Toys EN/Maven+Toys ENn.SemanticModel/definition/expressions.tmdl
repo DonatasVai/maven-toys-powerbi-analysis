@@ -1,0 +1,52 @@
+expression inventory =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\Donce\Desktop\PowerBI\New folder\Maven+Toys\Maven Toys Data\inventory.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Store_ID", Int64.Type}, {"Product_ID", Int64.Type}, {"Stock_On_Hand", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 3eaf4f56-12c4-499d-bbf1-7e41f9254deb
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression products =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\Donce\Desktop\PowerBI\New folder\Maven+Toys\Maven Toys Data\products.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Product_ID", Int64.Type}, {"Product_Name", type text}, {"Product_Category", type text}, {"Product_Cost", type text}, {"Product_Price", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: ddaddac4-e63e-459e-9add-d6fa1355de66
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression sales =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\Donce\Desktop\PowerBI\New folder\Maven+Toys\Maven Toys Data\sales.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Sale_ID", Int64.Type}, {"Date", type date}, {"Store_ID", Int64.Type}, {"Product_ID", Int64.Type}, {"Units", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: edec1ffe-0b86-45a3-87a2-10345b57dec3
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression stores =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\Donce\Desktop\PowerBI\New folder\Maven+Toys\Maven Toys Data\stores.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Store_ID", Int64.Type}, {"Store_Name", type text}, {"Store_City", type text}, {"Store_Location", type text}, {"Store_Open_Date", type date}})
+		in
+		    #"Changed Type"
+	lineageTag: 0bee42dc-d399-43ea-9d6a-8db09bc249cc
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

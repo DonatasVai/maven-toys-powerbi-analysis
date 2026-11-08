@@ -1,0 +1,154 @@
+table _Measures
+	lineageTag: e575d5ab-b503-4222-9d57-fdf500dfaa27
+
+	measure 'bendras produktu savikainos vidurkis' = AVERAGE(DIM_products[Product_Cost])
+		displayFolder: Profitability
+		lineageTag: 95545801-ebed-4a79-92d2-84b239319a94
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'bendras produktu kainos vartotojui vidurkis' = AVERAGE(DIM_products[Product_Price])
+		displayFolder: Profitability
+		lineageTag: f7caea8b-d6f7-44c7-8fa2-c3fbee5883a4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'bendras produktu pelningumo vidurkis' = CALCULATE([bendras produktu kainos vartotojui vidurkis] - [bendras produktu savikainos vidurkis])
+		displayFolder: Profitability
+		lineageTag: b1131692-a362-4e83-b865-118c4899a5a5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Brangiausias produktas' = MAX(DIM_products[Product_Price])
+		lineageTag: fe0350cf-c05c-4c63-80b0-78f4d4d48e49
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Pigiausias produktas' = MIN(DIM_products[Product_Price])
+		lineageTag: e52513aa-7936-422d-87e3-8bc411bc5e9f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Unikalus produktai' = DISTINCTCOUNT(F_inventory[Product_ID])
+		formatString: 0
+		lineageTag: 585b0c31-a9d5-4ade-8856-79f050322ca9
+
+	measure Pelnas = SUM(DIM_products[Product_Price]) - SUM(DIM_products[Product_Cost])
+		lineageTag: 811ff893-0ee3-4762-be92-43e8a359a682
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total units sold' = SUM(F_sales[Units])
+		formatString: 0
+		lineageTag: c70f26e6-5608-4d82-a9b2-fb82f31174ae
+
+	measure 'Total sales count' = COUNT(F_sales[Sale_ID])
+		formatString: 0
+		lineageTag: df0cd1eb-38f5-4d40-9c52-8749af332ec1
+
+	measure 'units count' = COUNT(F_sales[Units])
+		formatString: 0
+		lineageTag: 85b7d8b7-b22b-4637-a92e-798b8fbb3a04
+
+	measure 'Total Sales / revenue' =
+			
+			SUMX(
+			    F_sales,
+			    F_sales[Units] * RELATED(DIM_products[Product_Price]))
+		lineageTag: 3ca859d0-1559-4c56-b9d5-cbff990f9612
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Cost' =
+			
+			SUMX(
+			    F_sales,
+			    F_sales[Units] * RELATED(DIM_products[Product_Cost])
+			)
+		lineageTag: 6132c6fb-5cbe-4605-a852-eaf3f8b6d925
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Profit' = [Total Sales / revenue] - [Total Cost]
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 09582574-4f0c-4e6c-ad72-d1a6324ee921
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Profit Margin %' =
+			
+			DIVIDE([Total Profit], [Total sales count], 0)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 5962e2a7-b1de-463b-8410-bceb83da243e
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Sales LY' =
+			
+			CALCULATE([Total Sales / revenue],
+			SAMEPERIODLASTYEAR(DateTable_FromFactTable[Date]))
+		lineageTag: 0175097f-7f83-4894-b1fb-4a2e7d463896
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales YTD' =
+			
+			CALCULATE(TOTALYTD([Total Sales / revenue],DateTable_FromFactTable[Date]))
+		lineageTag: 771a6294-928a-4c92-a98c-f75aa63a11c3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales YTD LY' =
+			
+			CALCULATE([Sales YTD],SAMEPERIODLASTYEAR(DateTable_FromFactTable[Date]))
+		lineageTag: 33ea2960-5561-41ac-8709-ca8894a80d64
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Stock On Hand' = SUM(F_inventory[Stock_On_Hand])
+		formatString: 0
+		lineageTag: 0b59d665-6a5c-4527-bba1-d48f9f5f4dc7
+
+	measure 'Avg Daily Sales' =
+			
+			DIVIDE(
+			    [Total Units Sold],
+			    DISTINCTCOUNT(DateTable_FromFactTable[Date]),
+			    0)
+		lineageTag: e62462e0-e056-4615-9da2-0fc78e01e876
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Days of Supply' =
+			
+			DIVIDE(
+			    [Total Stock On Hand],
+			    [Avg Daily Sales],
+			    999)
+		lineageTag: a4aba536-557c-4a22-b8b1-fda4f6c06bbf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Out of Stock Count' =
+			
+			CALCULATE(
+			    COUNTROWS(F_inventory),
+			    F_inventory[Stock_On_Hand] = 0)
+		formatString: 0
+		lineageTag: 4ecc150c-00dd-4d48-92ee-a3f332935b89
+
+	column Value
+		formatString: 0
+		lineageTag: 26d39149-8be9-41e6-bd23-2bf9806a360e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source = {1}
+
+	annotation PBI_Id = 841537f51e0f409d98dcc1d61bf2ea90
+

@@ -1,0 +1,179 @@
+table DateTable_FromFactTable
+	lineageTag: 3d12fad2-5901-40aa-b961-01f491c3aafc
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: 3758ee2d-0143-47d4-aca2-2646c674eb64
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: 01b2f977-6c7d-4086-b224-1e41526967eb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		formatString: 0
+		lineageTag: ccacab68-17b8-4c13-a90a-606dd67fc827
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name LT'
+		lineageTag: 30dbb75c-bff9-46b9-9777-8b70a67ef778
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Name LT]
+		sortByColumn: 'Month Number'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year-Month
+		lineageTag: 60e7a497-5add-451b-aa78-df311df9c103
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year-Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: d3b276e5-c37c-4f95-b15e-f8eaba6d490f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		formatString: 0
+		lineageTag: 136edb22-0551-43b5-8ee1-dc3f78f12585
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Number'
+		formatString: 0
+		lineageTag: b2eedf0e-0911-474d-943a-2c251ea19863
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Week Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weekday Number'
+		formatString: 0
+		lineageTag: 8c6fe3f8-ba29-4504-b8f5-5d52419cec79
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Weekday Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weekday Name LT'
+		lineageTag: efb09f68-0a87-475e-9f7f-32aac1007054
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Weekday Name LT]
+		sortByColumn: 'Weekday Number'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last 30 Days'
+		lineageTag: a78f867a-2d8c-4807-b6ae-971d23b43bb2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Last 30 Days]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last 12 Months'
+		lineageTag: ebbad49c-9679-4ff5-ae14-7de744983c9c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Last 12 Months]
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy Data
+		lineageTag: 7ae4d158-850b-4290-9ac2-11dea2e9c590
+
+		level Year-Month
+			lineageTag: c9c2835b-3b21-44b6-8036-09ef5afa09e1
+			column: Year-Month
+
+		level Quarter
+			lineageTag: 60225cd2-1a0d-4dc2-9f40-caa6aaafbab9
+			column: Quarter
+
+		level 'Month Number'
+			lineageTag: ffacb11b-f61a-4a75-b1d8-17e98cfc09df
+			column: 'Month Number'
+
+		level Day
+			lineageTag: 20458b47-af2f-477e-b365-81e33627dd4d
+			column: Day
+
+	partition DateTable_FromFactTable = calculated
+		mode: import
+		source =
+				
+				VAR StartDate = MIN (F_sales[Date])
+				VAR EndDate   = MAX (F_sales[Date])
+				RETURN
+				ADDCOLUMNS (
+				    CALENDAR ( StartDate, EndDate ),
+				    "Year", YEAR ( [Date] ),
+				    "Month Number", MONTH ( [Date] ),
+				    "Month Name LT",
+				        SWITCH (
+				            MONTH ( [Date] ),
+				            1, "January",
+				            2, "February",
+				            3, "March",
+				            4, "April",
+				            5, "May",
+				            6, "June",
+				            7, "July",
+				            8, "August",
+				            9, "September",
+				            10, "October",
+				            11, "November",
+				            12, "December"
+				        ),
+				    "Year-Month", FORMAT ( [Date], "YYYY-MM" ),
+				    "Quarter", "Q" & FORMAT ( [Date], "Q" ),
+				    "Day", DAY ( [Date] ),
+				    "Week Number", WEEKNUM ( [Date], 2 ),
+				    "Weekday Number", WEEKDAY ( [Date], 2 ),
+				    "Weekday Name LT",
+				        SWITCH (
+				            WEEKDAY ( [Date], 2 ),
+				            1, "Monday",
+				            2, "Tuesday",
+				            3, "Wednesday",
+				            4, "Thursday",
+				            5, "Friday",
+				            6, "Saturday",
+				            7, "Sunday"
+				        ),
+				    "Last 30 Days",
+				        IF ( [Date] >= TODAY() - 29 && [Date] <= TODAY(), "Yes", "No" ),
+				    "Last 12 Months",
+				        IF ( [Date] >= EDATE ( TODAY(), -12 ) + 1 && [Date] <= TODAY(), "Yes", "No" )
+				)
+
+	annotation PBI_Id = d37703a02f1f4259ae675b364860af4b
+

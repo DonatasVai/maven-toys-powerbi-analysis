@@ -1,0 +1,7 @@
+role Store_city
+	modelPermission: read
+
+	tablePermission DIM_stores = [Store_City] == "Guadalajara"
+
+	annotation PBI_Id = a9a8ca6476db4967bc4766926578092c
+

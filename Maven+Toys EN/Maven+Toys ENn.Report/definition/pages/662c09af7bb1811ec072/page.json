@@ -1,0 +1,15 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "662c09af7bb1811ec072",
+  "displayName": "Product Performance & Profitability",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "ba6150416a3d3123d7e8",
+      "target": "53751cb58359cb89ee46",
+      "type": "DataFilter"
+    }
+  ]
+}

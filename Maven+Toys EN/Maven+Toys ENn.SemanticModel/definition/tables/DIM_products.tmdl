@@ -1,0 +1,65 @@
+table DIM_products
+	lineageTag: 8b29cc13-f892-4691-a218-6fee41cd83c3
+
+	column Product_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: a95fcac0-517e-40a2-b2c0-60fb624cc721
+		summarizeBy: none
+		sourceColumn: Product_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Name
+		dataType: string
+		lineageTag: d47d2a1f-6076-4371-962d-238516080d2b
+		summarizeBy: none
+		sourceColumn: Product_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Category
+		dataType: string
+		lineageTag: 5c7fbe63-be97-4996-92d8-b47a8dc6bfd4
+		summarizeBy: none
+		sourceColumn: Product_Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Cost
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 4493c445-4231-4f86-8abd-92818f1abbc9
+		summarizeBy: sum
+		sourceColumn: Product_Cost
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Price
+		dataType: double
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 4e894830-6f7a-44e0-9644-b83abc3bc660
+		summarizeBy: sum
+		sourceColumn: Product_Price
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIM_products = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Donce\Desktop\PowerBI\New folder\Maven+Toys\Maven Toys Data\products.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Product_ID", Int64.Type}, {"Product_Name", type text}, {"Product_Category", type text}, {"Product_Cost", type text}, {"Product_Price", type text}}),
+				    #"Removed Blank Rows" = Table.SelectRows(#"Changed Type", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Blank Rows"),
+				    #"Replaced Value" = Table.ReplaceValue(#"Removed Duplicates","$","",Replacer.ReplaceText,{"Product_Cost"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","$","",Replacer.ReplaceText,{"Product_Price"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Replaced Value1",{{"Product_Cost", type number}, {"Product_Price", type number}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

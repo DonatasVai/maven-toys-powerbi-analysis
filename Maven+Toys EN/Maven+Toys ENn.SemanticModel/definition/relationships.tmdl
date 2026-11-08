@@ -1,0 +1,30 @@
+relationship be20882b-34ee-4ff2-9225-33d986517385
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DIM_stores.Store_Open_Date
+	toColumn: LocalDateTable_3645697e-ba78-437e-a461-78f41403d736.Date
+
+relationship AutoDetected_4005f654-64ce-474b-b9d4-2e34abe06619
+	fromColumn: F_sales.Store_ID
+	toColumn: DIM_stores.Store_ID
+
+relationship AutoDetected_12d8909a-df12-4444-8042-570cc4cca8fb
+	fromColumn: F_sales.Product_ID
+	toColumn: DIM_products.Product_ID
+
+relationship 5eed5c98-0fe4-5e7b-f0a1-54322b920124
+	isActive: false
+	fromColumn: F_sales.Date
+	toColumn: DIM_stores.Store_Open_Date
+
+relationship 7281d8df-1e6f-9a50-f99b-fd57f618f218
+	fromColumn: F_inventory.Product_ID
+	toColumn: DIM_products.Product_ID
+
+relationship c0becb8d-0dfe-89e8-137d-9a270dca803d
+	fromColumn: F_inventory.Store_ID
+	toColumn: DIM_stores.Store_ID
+
+relationship d0ebe648-a5f9-5e1a-8d3f-4f436814c60e
+	fromColumn: F_sales.Date
+	toColumn: DateTable_FromFactTable.Date
+
